@@ -3,7 +3,6 @@ import { motion } from 'motion/react'
 import { useCamera } from '../lib/useCamera'
 import { captureVideo } from '../lib/capture'
 import { shutterSound, tick } from '../lib/sound'
-import { EFFECTS } from '../engine/effects'
 import { Device } from './Device'
 import { Deck } from './Deck'
 import { IconCamera, IconUpload } from './Icons'
@@ -14,12 +13,6 @@ interface Props {
   onCapture(crop: HTMLCanvasElement): void
   onFile(file: File): void
 }
-
-const STEPS = [
-  ['Open the camera', 'or drop in any photo you already have.'],
-  ['Hold still', 'one frame, one shot. Space bar works too.'],
-  ['Get your print', `one of ${EFFECTS.length} dither effects, picked at random.`],
-]
 
 const rise = {
   hidden: { opacity: 0, y: 18, filter: 'blur(6px)' },
@@ -144,29 +137,10 @@ export function Booth({ autoStart, busy, onCapture, onFile }: Props) {
     >
       <section className="hero">
         <div className="hero-copy">
-          <motion.p className="eyebrow" variants={rise} initial="hidden" animate="show" custom={0}>
-            <span className="eyebrow-dot" /> Random dither photobooth
-          </motion.p>
-          <motion.h1 variants={rise} initial="hidden" animate="show" custom={1}>
-            Strike a pose.
-            <br />
-            <span className="h1-dim">Get dithered.</span>
+          <motion.h1 variants={rise} initial="hidden" animate="show" custom={0}>
+            Get dithered.
           </motion.h1>
-          <motion.p className="lede" variants={rise} initial="hidden" animate="show" custom={2}>
-            One photo goes in. One Polaroid comes out, printed with a dither effect you don't get to choose. No sign-up.
-            Nothing leaves your browser.
-          </motion.p>
-          <motion.ol className="steps" variants={rise} initial="hidden" animate="show" custom={3}>
-            {STEPS.map(([a, b], i) => (
-              <li key={a}>
-                <span className="step-n">0{i + 1}</span>
-                <span>
-                  <strong>{a}</strong> — {b}
-                </span>
-              </li>
-            ))}
-          </motion.ol>
-          <motion.div className="cta-row" variants={rise} initial="hidden" animate="show" custom={4}>
+          <motion.div className="cta-row" variants={rise} initial="hidden" animate="show" custom={1}>
             {live ? (
               <button className="btn btn-dark" onClick={shoot} disabled={count !== null}>
                 <IconCamera />
@@ -184,9 +158,6 @@ export function Booth({ autoStart, busy, onCapture, onFile }: Props) {
               Upload photo
             </button>
           </motion.div>
-          <motion.p className="fine" variants={rise} initial="hidden" animate="show" custom={5}>
-            Prints come out 3:4 or 4:3 depending on your photo. Even light on your face gives the crispest dither.
-          </motion.p>
         </div>
 
         <motion.div
@@ -194,7 +165,7 @@ export function Booth({ autoStart, busy, onCapture, onFile }: Props) {
           className="hero-device"
           initial={{ opacity: 0, y: 40, rotateX: 12 }}
           animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 20, delay: 0.15 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 20, delay: 0.2 }}
         >
           <Device
             status={cam.status}

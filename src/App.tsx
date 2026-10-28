@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Booth } from './components/Booth'
 import { Darkroom } from './components/Darkroom'
 import { Mark } from './components/Icons'
-import { EFFECTS, effectIndex, pickEffect, renderEffect, type Effect } from './engine/effects'
+import { effectIndex, pickEffect, renderEffect, type Effect } from './engine/effects'
 import { buildSource } from './engine/source'
 import { ensureFonts } from './engine/fonts'
 import { loadImageFile, orientationOf, outputSize } from './lib/capture'
@@ -77,11 +77,6 @@ export default function App() {
           <Mark size={15} />
           <span>Dithered</span>
         </button>
-        <p className="topbar-meta">
-          <span>{EFFECTS.length} effects</span>
-          <span>No login</span>
-          <span>Nothing saved</span>
-        </p>
       </header>
 
       <main>

@@ -46,8 +46,7 @@ export function Darkroom({ print, onRetake }: Props) {
   const stats: [string, string][] = [
     ['Effect', `${pad2(index + 1)} of ${EFFECTS.length}`],
     ['Format', `${portrait ? '3:4' : '4:3'} · ${canvas.width}×${canvas.height}`],
-    ['Render', `${Math.max(1, Math.round(ms))} ms, on this device`],
-    ['Stored', 'Nowhere'],
+    ['Render', `${Math.max(1, Math.round(ms))} ms`],
   ]
 
   return (
@@ -95,9 +94,6 @@ export function Darkroom({ print, onRetake }: Props) {
             <kbd>R</kbd>
           </button>
         </motion.div>
-        <motion.p className="fine" variants={item} custom={5}>
-          Made in your browser. Nothing was uploaded, and it's gone when you leave or retake.
-        </motion.p>
       </motion.aside>
     </motion.section>
   )

@@ -1,17 +1,24 @@
 import { useEffect, useState } from 'react'
 import { EFFECTS, renderEffect } from '../engine/effects'
 import { buildSource } from '../engine/source'
-import { sampleScene } from '../engine/sample'
 import { ensureFonts } from '../engine/fonts'
 import { pad2 } from '../engine/polaroid'
+import { cropToPrint } from '../lib/capture'
 
-const TW = 240
-const TH = 320
+const TW = 300
+const TH = 400
 
 // Rendered once per page load and shared across remounts.
 let cache: Record<string, string> | null = null
 
-/** A marquee previewing every effect on a procedural still life. */
+async function loadSample() {
+  const img = new Image()
+  img.src = '/sample.jpg'
+  await img.decode()
+  return cropToPrint(img, img.naturalWidth, img.naturalHeight)
+}
+
+/** A marquee previewing every effect on a sample selfie. */
 export function Deck() {
   const [thumbs, setThumbs] = useState<Record<string, string>>(cache ?? {})
 
@@ -20,8 +27,9 @@ export function Deck() {
     let cancelled = false
     const acc: Record<string, string> = {}
     ;(async () => {
-      await ensureFonts()
-      const src = buildSource(sampleScene(TW, TH), TW, TH, 0.36)
+      const [sample] = await Promise.all([loadSample(), ensureFonts()])
+      if (cancelled) return
+      const src = buildSource(sample, TW, TH, 0.4)
       for (const e of EFFECTS) {
         if (cancelled) return
         // yield between renders so the page stays responsive
@@ -54,7 +62,6 @@ export function Deck() {
         <h2>
           The deck <span>/ {EFFECTS.length} effects</span>
         </h2>
-        <p>Every print draws one at random. You won't know which until it develops.</p>
       </header>
       <div className="marquee">
         <div className="marquee-track">
